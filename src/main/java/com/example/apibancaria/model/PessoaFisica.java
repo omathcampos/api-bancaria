@@ -1,5 +1,6 @@
 package com.example.apibancaria.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PessoaFisica {
     @Column(name = "rg", nullable = false, unique = true)
     private String rg;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_nascimento", nullable = false)
     private String dataNascimento;
 
