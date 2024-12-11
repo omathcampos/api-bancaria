@@ -5,22 +5,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public class PessoaFisicaDto {
 
-    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 
-    @NotBlank(message = "O CPF é obrigatório.")
     private String cpf;
 
-    @NotBlank(message = "O RG é obrigatório.")
     private String rg;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotBlank(message = "A data de nascimento é obrigatória.")
     private String dataNascimento;
 
-    @NotBlank(message = "O endereço é obrigatório.")
     private String endereco;
-
 
     public String getNome() {
         return nome;

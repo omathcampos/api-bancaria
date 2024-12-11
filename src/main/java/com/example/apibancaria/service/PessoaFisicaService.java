@@ -1,10 +1,15 @@
 package com.example.apibancaria.service;
 
 import com.example.apibancaria.dto.PessoaFisicaDto;
+import com.example.apibancaria.exception.custom.CustomConflictException;
+import com.example.apibancaria.exception.custom.CustomNotFound;
+import com.example.apibancaria.exception.custom.CustomNullPointerException;
 import com.example.apibancaria.model.PessoaFisica;
 import com.example.apibancaria.repository.PessoaFisicaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,21 +20,62 @@ public class PessoaFisicaService {
     @Autowired
     private PessoaFisicaRepository pessoaFisicaRepository;
 
-    public List<PessoaFisica> listarPessoasFisicas() {
-        return pessoaFisicaRepository.findAll();
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(PessoaFisicaService.class);
 
-    public PessoaFisica listarPessoaFisicasPorId(Long id) {
-        return pessoaFisicaRepository.findById(id).get();
-    }
 
-    public PessoaFisica cadastroPF(PessoaFisicaDto pessoaFisicaDto) {
+    private PessoaFisica conversor(PessoaFisicaDto pessoaFisicaDto) {
         PessoaFisica pessoaFisica = new PessoaFisica();
         pessoaFisica.setNome(pessoaFisicaDto.getNome());
         pessoaFisica.setCpf(pessoaFisicaDto.getCpf());
         pessoaFisica.setRg(pessoaFisicaDto.getRg());
         pessoaFisica.setDataNascimento(pessoaFisicaDto.getDataNascimento());
         pessoaFisica.setEndereco(pessoaFisicaDto.getEndereco());
-        return pessoaFisicaRepository.save(pessoaFisica);
+        return pessoaFisica;
+    }
+
+    private void validandoValores(PessoaFisicaDto pessoaFisicaDto) {
+        validarCampoVazio(pessoaFisicaDto.getNome(), "nome");
+        validarCampoVazio(pessoaFisicaDto.getCpf(), "cpf");
+        validarCampoVazio(pessoaFisicaDto.getRg(), "RG");
+        validarCampoVazio(pessoaFisicaDto.getDataNascimento(), "Data de Nascimento");
+        validarCampoVazio(pessoaFisicaDto.getEndereco(), "endereço");
+
+        if (pessoaFisicaRepository.existsByCpf(pessoaFisicaDto.getCpf())) {
+            throw new CustomConflictException("Já existe um cadastro com esse CPF");
+        }
+
+        if (pessoaFisicaRepository.existsByRg(pessoaFisicaDto.getRg())) {
+            throw new CustomConflictException("Já existe um cadastro com esse RG");
+        }
+    }
+
+    private void validarCampoVazio(String campo, String nomeCampo) {
+        if (campo == null || campo.isEmpty()) {
+            throw new CustomNullPointerException("Preencha o campo " + nomeCampo);
+        }
+    }
+
+    public List<PessoaFisica> listarPessoasFisicas() {
+        return pessoaFisicaRepository.findAll();
+    }
+
+    public PessoaFisica listarPessoaFisicasPorId(Long id) {
+        return pessoaFisicaRepository.findById(id).orElseThrow(() -> new CustomNotFound("Pessoa Fisica não encontrada: " + id + " Busque por outro ID"));
+    }
+
+    public PessoaFisica cadastroPF(PessoaFisicaDto pessoaFisicaDto) {
+        validandoValores(pessoaFisicaDto);
+        try {
+            PessoaFisica pessoaFisica = conversor(pessoaFisicaDto);
+            PessoaFisica pessoaCadastrada = pessoaFisicaRepository.save(pessoaFisica);
+            LOGGER.info("Pessoa Física cadastrada com sucesso");
+            return pessoaCadastrada;
+        } catch (DataAccessException e) {
+            LOGGER.error("Erro ao salvar pessoa física no banco de dados: {}", e.getMessage());
+            throw new RuntimeException("Erro ao salvar pessoa física no banco de dados: " + e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("Erro inesperado ao cadastrar Pessoa Física: {}", e.getMessage());
+            throw new RuntimeException("Erro inesperado ao cadastrar pessoa física: " + e.getMessage());
+        }
     }
 }

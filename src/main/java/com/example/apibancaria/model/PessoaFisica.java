@@ -15,20 +15,15 @@ public class PessoaFisica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false, unique = true)
     private String nome;
 
-    @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
 
-    @Column(name = "rg", nullable = false, unique = true)
     private String rg;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "data_nascimento", nullable = false)
     private String dataNascimento;
 
-    @Column(name = "endereco", nullable = false)
     private String endereco;
 
     public PessoaFisica() {

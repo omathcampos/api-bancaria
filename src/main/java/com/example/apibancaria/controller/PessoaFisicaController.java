@@ -23,7 +23,7 @@ public class PessoaFisicaController {
       return pessoaFisicaService.listarPessoasFisicas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-pessoa-fisica/{id}")
     public PessoaFisica buscarPessoaFisicaPorId(@PathVariable Long id) {
         return pessoaFisicaService.listarPessoaFisicasPorId(id);
     }
