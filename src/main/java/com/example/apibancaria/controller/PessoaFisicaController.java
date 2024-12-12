@@ -20,7 +20,7 @@ public class PessoaFisicaController {
 
     @GetMapping("/listar-pessoas-fisicas")
     public List<PessoaFisica> listarPessoasFisicas() {
-      return pessoaFisicaService.listarPessoasFisicas();
+        return pessoaFisicaService.listarPessoasFisicas();
     }
 
     @GetMapping("/buscar-pessoa-fisica/{id}")
@@ -32,6 +32,14 @@ public class PessoaFisicaController {
     public ResponseEntity salvar(@RequestBody @Valid PessoaFisicaDto pessoaFisicaDto) {
         pessoaFisicaService.cadastroPF(pessoaFisicaDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Pessoa Fisíca cadastrada com sucesso!");
+    }
+
+    @PatchMapping("/atualizar/{id}")
+    public ResponseEntity<PessoaFisica> atualizarPessoaFisica(
+            @RequestBody PessoaFisicaDto pessoaFisicaDto,
+            @PathVariable Long id) {
+        PessoaFisica pessoaAtualizada = pessoaFisicaService.alterandoPF(pessoaFisicaDto, id);
+        return ResponseEntity.ok(pessoaAtualizada);
     }
 
     @DeleteMapping("/deletarPF/{id}")

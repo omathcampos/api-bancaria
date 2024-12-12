@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class PessoaFisicaService {
         return pessoaFisica;
     }
 
-    private void validandoValores(PessoaFisicaDto pessoaFisicaDto) {
+    private void validandoValoresCadastro(PessoaFisicaDto pessoaFisicaDto) {
         validarCampoVazio(pessoaFisicaDto.getNome(), "nome");
         validarCampoVazio(pessoaFisicaDto.getCpf(), "cpf");
         validarCampoVazio(pessoaFisicaDto.getRg(), "RG");
@@ -49,6 +48,11 @@ public class PessoaFisicaService {
         if (pessoaFisicaRepository.existsByRg(pessoaFisicaDto.getRg())) {
             throw new CustomConflictException("Já existe um cadastro com esse RG");
         }
+    }
+
+    private void validandoAlteracaoValores(PessoaFisicaDto pessoaFisicaDto) {
+        validarCampoVazio(pessoaFisicaDto.getNome(), "nome");
+        validarCampoVazio(pessoaFisicaDto.getEndereco(), "endereco");
     }
 
     private void validarCampoVazio(String campo, String nomeCampo) {
@@ -66,7 +70,7 @@ public class PessoaFisicaService {
     }
 
     public PessoaFisica cadastroPF(PessoaFisicaDto pessoaFisicaDto) {
-        validandoValores(pessoaFisicaDto);
+        validandoValoresCadastro(pessoaFisicaDto);
         try {
             PessoaFisica pessoaFisica = conversor(pessoaFisicaDto);
             PessoaFisica pessoaCadastrada = pessoaFisicaRepository.save(pessoaFisica);
@@ -79,6 +83,18 @@ public class PessoaFisicaService {
             LOGGER.error("Erro inesperado ao cadastrar Pessoa Física: {}", e.getMessage());
             throw new RuntimeException("Erro inesperado ao cadastrar pessoa física: " + e.getMessage());
         }
+    }
+
+    public PessoaFisica alterandoPF(PessoaFisicaDto pessoaFisicaDto, Long id) {
+        validandoAlteracaoValores(pessoaFisicaDto);
+
+        PessoaFisica pessoaCadastrada = pessoaFisicaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pessoa Física não encontrada com ID: " + id));
+
+        pessoaCadastrada.setNome(pessoaFisicaDto.getNome());
+        pessoaCadastrada.setEndereco(pessoaFisicaDto.getEndereco());
+
+        return pessoaFisicaRepository.save(pessoaCadastrada);
     }
 
     public void deletandoPessoaFisica(Long id) {
