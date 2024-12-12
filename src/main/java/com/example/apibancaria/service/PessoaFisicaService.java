@@ -6,10 +6,12 @@ import com.example.apibancaria.exception.custom.CustomNotFound;
 import com.example.apibancaria.exception.custom.CustomNullPointerException;
 import com.example.apibancaria.model.PessoaFisica;
 import com.example.apibancaria.repository.PessoaFisicaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,4 +80,14 @@ public class PessoaFisicaService {
             throw new RuntimeException("Erro inesperado ao cadastrar pessoa física: " + e.getMessage());
         }
     }
+
+    public void deletandoPessoaFisica(Long id) {
+        if (!pessoaFisicaRepository.existsById(id)) {
+            LOGGER.error("Pessoa com id: " + id + " não encontrada, busque por outro.");
+            throw new CustomNotFound("Pessoa Física não encontrada com ID: " + id);
+        }
+        pessoaFisicaRepository.deleteById(id);
+        LOGGER.info("Pessoa física de id " + id + " deletada com sucesso");
+    }
+
 }

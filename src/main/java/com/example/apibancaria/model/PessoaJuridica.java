@@ -13,7 +13,7 @@ public class PessoaJuridica {
     private List<ContaBancaria> contas;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "razaoSocial", nullable = false, unique = true)

@@ -34,4 +34,9 @@ public class PessoaFisicaController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Pessoa Fisíca cadastrada com sucesso!");
     }
 
+    @DeleteMapping("/deletarPF/{id}")
+    public ResponseEntity deletandoPessoasFisica(@RequestParam Long id) {
+        pessoaFisicaService.deletandoPessoaFisica(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

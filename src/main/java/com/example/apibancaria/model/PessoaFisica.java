@@ -12,7 +12,7 @@ public class PessoaFisica {
     private List<ContaBancaria> contas;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String nome;

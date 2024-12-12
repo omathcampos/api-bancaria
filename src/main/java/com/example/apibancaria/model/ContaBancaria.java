@@ -21,7 +21,7 @@ public class ContaBancaria {
     private PessoaJuridica pessoaJuridica;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "numero_conta", nullable = false, unique = true)
