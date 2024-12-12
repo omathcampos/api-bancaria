@@ -1,19 +1,9 @@
-package com.example.apibancaria.model;
+package com.example.apibancaria.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
-
-@Entity
-@Table(name = "pessoaFisica")
-public class PessoaFisica {
-    @OneToMany(mappedBy = "pessoaFisica", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ContaBancaria> contas;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class PessoaFisicaDto {
 
     private String nome;
 
@@ -25,26 +15,6 @@ public class PessoaFisica {
     private String dataNascimento;
 
     private String endereco;
-
-    public PessoaFisica() {
-    }
-
-    public PessoaFisica(Long id, String nome, String cpf, String rg, String dataNascimento, String endereco) {
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.rg = rg;
-        this.dataNascimento = dataNascimento;
-        this.endereco = endereco;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -86,4 +56,3 @@ public class PessoaFisica {
         this.endereco = endereco;
     }
 }
-
