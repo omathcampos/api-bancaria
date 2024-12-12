@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -38,8 +39,8 @@ public class PessoaFisicaService {
         validarCampoVazio(pessoaFisicaDto.getNome(), "nome");
         validarCampoVazio(pessoaFisicaDto.getCpf(), "cpf");
         validarCampoVazio(pessoaFisicaDto.getRg(), "RG");
-        validarCampoVazio(pessoaFisicaDto.getDataNascimento(), "Data de Nascimento");
         validarCampoVazio(pessoaFisicaDto.getEndereco(), "endereço");
+        validarDataNascimento(pessoaFisicaDto.getDataNascimento());
 
         if (pessoaFisicaRepository.existsByCpf(pessoaFisicaDto.getCpf())) {
             throw new CustomConflictException("Já existe um cadastro com esse CPF");
@@ -58,6 +59,17 @@ public class PessoaFisicaService {
     private void validarCampoVazio(String campo, String nomeCampo) {
         if (campo == null || campo.isEmpty()) {
             throw new CustomNullPointerException("Preencha o campo " + nomeCampo);
+        }
+    }
+
+    private void validarDataNascimento(LocalDate dataNascimento) {
+        if (dataNascimento == null) {
+            throw new CustomNullPointerException("Preencha o campo Data de Nascimento");
+        }
+
+        LocalDate hoje = LocalDate.now();
+        if (dataNascimento.isAfter(hoje)) {
+            throw new CustomConflictException("A Data de Nascimento não pode ser uma data futura");
         }
     }
 

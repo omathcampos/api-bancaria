@@ -3,6 +3,8 @@ package com.example.apibancaria.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 public class PessoaFisicaDto {
 
     private String nome;
@@ -12,7 +14,7 @@ public class PessoaFisicaDto {
     private String rg;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     private String endereco;
 
@@ -40,11 +42,11 @@ public class PessoaFisicaDto {
         this.rg = rg;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

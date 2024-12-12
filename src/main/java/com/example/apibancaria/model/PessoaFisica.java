@@ -1,8 +1,11 @@
 package com.example.apibancaria.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,14 +25,14 @@ public class PessoaFisica {
     private String rg;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     private String endereco;
 
     public PessoaFisica() {
     }
 
-    public PessoaFisica(Long id, String nome, String cpf, String rg, String dataNascimento, String endereco) {
+    public PessoaFisica(Long id, String nome, String cpf, String rg, LocalDate dataNascimento, String endereco) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -70,11 +73,11 @@ public class PessoaFisica {
         this.rg = rg;
     }
 
-    public String getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
