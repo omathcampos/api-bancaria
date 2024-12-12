@@ -12,8 +12,16 @@ public class ContaBancaria {
     @OneToMany(mappedBy = "contaBancaria", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transacao> transacoes;
 
+    @ManyToOne
+    @JoinColumn(name = "pessoa_fisica_id")
+    private PessoaFisica pessoaFisica;
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_juridica_id")
+    private PessoaJuridica pessoaJuridica;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "numero_conta", nullable = false, unique = true)
