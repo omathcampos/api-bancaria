@@ -3,8 +3,6 @@ package com.example.apibancaria.controller;
 import com.example.apibancaria.dto.PessoaJuridicaDto;
 import com.example.apibancaria.model.PessoaJuridica;
 import com.example.apibancaria.service.PessoaJuridicaService;
-import jakarta.persistence.Id;
-import lombok.Lombok;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

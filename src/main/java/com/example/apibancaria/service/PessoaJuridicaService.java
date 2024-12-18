@@ -1,11 +1,9 @@
 package com.example.apibancaria.service;
 
-import com.example.apibancaria.dto.PessoaFisicaDto;
 import com.example.apibancaria.dto.PessoaJuridicaDto;
 import com.example.apibancaria.exception.custom.CustomConflictException;
 import com.example.apibancaria.exception.custom.CustomNotFound;
 import com.example.apibancaria.exception.custom.CustomNullPointerException;
-import com.example.apibancaria.model.PessoaFisica;
 import com.example.apibancaria.model.PessoaJuridica;
 import com.example.apibancaria.repository.PessoaJuridicaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,6 +34,17 @@ public class PessoaJuridicaService {
     }
 
     private void validandoValoresCadastro(PessoaJuridicaDto pessoaJuridicaDto) {
+        validarCampoVazio(pessoaJuridicaDto.getCnpj(), "cnpj");
+        validarCampoVazio(pessoaJuridicaDto.getRazaoSocial(), "razaoSocial");
+        validarCampoVazio(pessoaJuridicaDto.getEndereco(), "endereco");
+        validarDataFundacao(pessoaJuridicaDto.getDataFundacao());
+
+        if(pessoaJuridicaRepository.existsByCnpj(pessoaJuridicaDto.getCnpj())) {
+            throw new CustomConflictException("Já existe um cadastro com este CNPJ");
+        }
+    }
+
+    public void validandoValoresAlteracao(PessoaJuridicaDto pessoaJuridicaDto) {
         validarCampoVazio(pessoaJuridicaDto.getCnpj(), "cnpj");
         validarCampoVazio(pessoaJuridicaDto.getRazaoSocial(), "razaoSocial");
         validarCampoVazio(pessoaJuridicaDto.getEndereco(), "endereco");
@@ -84,7 +93,7 @@ public class PessoaJuridicaService {
     }
 
     public PessoaJuridica alterandoPJ(PessoaJuridicaDto pessoaJuridicaDto, Long id) {
-        validandoValoresCadastro(pessoaJuridicaDto);
+        validandoValoresAlteracao(pessoaJuridicaDto);
 
         PessoaJuridica pessoaCadastrada = pessoaJuridicaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pessoa Juridica não encontrada com ID: " + id));
