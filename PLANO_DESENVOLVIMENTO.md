@@ -1,4 +1,5 @@
-# 📋 PLANO DE DESENVOLVIMENTO - API BANCÁRIA
+
+bom no código, onde vc# 📋 PLANO DE DESENVOLVIMENTO - API BANCÁRIA
 
 ## 🎯 Visão Geral
 Este documento contém o plano detalhado de microtarefas para completar o desenvolvimento da API Bancária, organizadas por fases e prioridades.
