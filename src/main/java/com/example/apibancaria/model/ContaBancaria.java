@@ -87,4 +87,28 @@ public class ContaBancaria {
     public void setTipoConta(TipoConta tipoConta) {
         this.tipoConta = tipoConta;
     }
+
+    public List<Transacao> getTransacoes() {
+        return transacoes;
+    }
+
+    public void setTransacoes(List<Transacao> transacoes) {
+        this.transacoes = transacoes;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
+
+    public PessoaJuridica getPessoaJuridica() {
+        return pessoaJuridica;
+    }
+
+    public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+        this.pessoaJuridica = pessoaJuridica;
+    }
 }

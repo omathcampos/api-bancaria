@@ -58,4 +58,12 @@ public class Transacao {
     public void setMomentoTransacao(LocalDateTime momentoTransacao) {
         this.momentoTransacao = momentoTransacao;
     }
+
+    public ContaBancaria getContaBancaria() {
+        return contaBancaria;
+    }
+
+    public void setContaBancaria(ContaBancaria contaBancaria) {
+        this.contaBancaria = contaBancaria;
+    }
 }
