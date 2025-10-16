@@ -6,6 +6,7 @@ import com.example.apibancaria.exception.custom.CustomNotFound;
 import com.example.apibancaria.exception.custom.CustomNullPointerException;
 import com.example.apibancaria.model.PessoaFisica;
 import com.example.apibancaria.repository.PessoaFisicaRepository;
+import com.example.apibancaria.util.CpfCnpjValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,10 @@ public class PessoaFisicaService {
         validarCampoVazio(pessoaFisicaDto.getRg(), "RG");
         validarCampoVazio(pessoaFisicaDto.getDataNascimento(), "Data de Nascimento");
         validarCampoVazio(pessoaFisicaDto.getEndereco(), "endereço");
+
+        if (!CpfCnpjValidator.isValidCpf(pessoaFisicaDto.getCpf())) {
+            throw new CustomNullPointerException("CPF inválido");
+        }
 
         if (pessoaFisicaRepository.existsByCpf(pessoaFisicaDto.getCpf())) {
             throw new CustomConflictException("Já existe um cadastro com esse CPF");

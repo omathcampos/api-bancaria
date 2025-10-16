@@ -6,6 +6,7 @@ import com.example.apibancaria.exception.custom.CustomNotFound;
 import com.example.apibancaria.exception.custom.CustomNullPointerException;
 import com.example.apibancaria.model.PessoaJuridica;
 import com.example.apibancaria.repository.PessoaJuridicaRepository;
+import com.example.apibancaria.util.CpfCnpjValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class PessoaJuridicaService {
         validarCampoObrigatorio(dto.getCnpj(), "CNPJ");
         validarCampoObrigatorio(dto.getDataFundacao(), "data de fundação");
         validarCampoObrigatorio(dto.getEndereco(), "endereço");
+
+        if (!CpfCnpjValidator.isValidCnpj(dto.getCnpj())) {
+            throw new CustomNullPointerException("CNPJ inválido");
+        }
 
         if (pessoaJuridicaRepository.existsByCnpj(dto.getCnpj())) {
             throw new CustomConflictException("Já existe um cadastro com esse CNPJ");
